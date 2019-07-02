@@ -6,8 +6,55 @@ from math import cos
 from math import acos
 import pyxel
 
+#ブロックの横の数
+block_num_x = 10
+#ブロックの縦の数
+block_num_y = 5
+
 #ボールとバーの接触判定に用いるバーの位置を保存するグローバル変数
 bar_x = 0
+
+#ブロック管理のクラス
+class BlockSet:
+    def __init__(self):
+        #ブロックの座標間隔の計算
+        self.dis_x = (pyxel.width-10)//block_num_x
+        self.dis_y = (pyxel.height-50)//block_num_y
+
+        #ブロックの大きさの計算
+        self.block_w = self.dis_x - 2
+        self.block_h = self.dis_y - 2
+
+        #ブロックの描画開始x座標の計算
+        self.start_x = (pyxel.width-(self.block_w*block_num_x)-(2*(block_num_x-1)))//2
+
+        #ブロックの管理するリスト
+        self.blocklist = []
+
+        #ブロックを生成
+        for i in range(block_num_y):
+            for j in range(block_num_x):
+                self.blocklist.append(Block(j*self.dis_x+self.start_x,i*self.dis_y+2,self.block_w,self.block_h))
+
+    #ブロックを表示する関数
+    def set(self):
+        for block in self.blocklist:
+            block.draw()
+
+
+#ブロックのクラス
+class Block:
+    def __init__(self,x,y,w,h):
+        #ブロックの位置
+        self.x = x
+        self.y = y
+        #ブロックの大きさ
+        self.w = w
+        self.h = h
+
+    #ブロックを表示する関数
+    def draw(self):
+        pyxel.rect(self.x, self.y, self.w, self.h, 8)
 
 #ボール管理のクラス
 class BallList:
@@ -108,8 +155,12 @@ class App:
         #ゲームの設定を行う
         pyxel.init(160,120,caption="ブロック崩し",fps=45)
         self.bar = Bar()
-        self.balllist = BallList()
-        self.balllist.increase(Ball(80,80))
+        #self.balllist = BallList()
+        #self.balllist.increase(Ball(80,80))
+
+        self.blockset = BlockSet()
+
+
         #フレーム毎にupdateとdrawを呼び出す
         pyxel.run(self.update, self.draw)
 
@@ -127,8 +178,11 @@ class App:
         pyxel.cls(0)
         #バーの描画
         self.bar.draw()
+
         #ボールの描画
-        self.balllist.draw()
+        #self.balllist.draw()
+
+        self.blockset.set()
 
 
 App()
