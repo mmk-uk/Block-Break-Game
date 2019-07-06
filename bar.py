@@ -7,7 +7,7 @@ class Bar:
         self.x = 72
         self.y = 110
         #バーの移動速度
-        self.speed = 3
+        self.speed = 2
 
     #右方向への移動
     def right(self):
@@ -20,6 +20,9 @@ class Bar:
         #端に着いたら行かないようにする
         if self.x>0:
             self.x = (self.x - self.speed) % pyxel.width
+
+    def center(self):
+        self.x = 72
 
     #バーを描画する関数
     def draw(self):

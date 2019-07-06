@@ -32,6 +32,8 @@ class Ball:
         #ボールの進む角度
         self.vector = 90
 
+        self.flag = False
+
     #ボールの位置を動かす関数
     def move(self):
         self.x = (self.x + self.speed*cos(radians(self.vector))) % pyxel.width
@@ -62,5 +64,6 @@ class Ball:
         self.bar_collision(bar_x)
         self.edge_collision()
         self.move()
+        self.flag = False
         #描画
         pyxel.circ(self.x,self.y,2,10)
